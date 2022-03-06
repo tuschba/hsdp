@@ -1,15 +1,16 @@
 """
 Project for:
- BBT.HTI.508 Health Software Development Project
+    BBT.HTI.508 Health Software Development Project
+    Spring 2022
 
 Made by:
-Olivia Aarikka
-Anni Hakola
-Miina Rautakorpi
-Tuulia Laakso
+    Olivia Aarikka
+    Anni Hakola
+    Miina Rautakorpi
+    Tuulia Laakso
 
 Instructions:
-This application analyses blood data.
+    This application analyses blood sample data and presents the analysis to a healthcare professional.
 """
 
 import json
@@ -23,19 +24,21 @@ class Patient:
         self.__id = id
         self.__name = name
 
-        # Näihin listoihin tallennetaan yksittäisiä veriarvoja int-muodossa aikajärjestyksessä.
+        #Näihin listoihin tallennetaan yksittäisiä veriarvoja aikajärjestyksessä. Ei vielä käytössä missään.
+        #Muukin muoto kuin lista voisi toimia.
         self.__glucoseB = []
         self.__glucoseS = []
         self.__bilirubE = []
         self.__bilirubK = []
 
-    def return_id(self):
-        return int(self.__id)
+    def return_id_name(self):
+        return int(self.__id), str(self.__name)
 
     def return_blood_values(self):
         return self.__glucoseB, self.__glucoseS, self.__bilirubE, self.__bilirubK
 
     def print_self(self):
+        pprint("Printing information of patient:")
         pprint(self.__id)
         pprint(self.__name)
 
@@ -72,11 +75,19 @@ class HealthSofta:
         self.__main_window = Tk()
         self.__main_window.title("HealthSofta")
 
-        self.__PATIENTS = []
-        self.__PATIENT_NAMES = []
+        #Tässä dictissä on keynä potilaan id, ja sen jälkeen potilasolento.
+        self.__PATIENTS = {}
+
+        #Creating components for UI
+        self.__startButton = Button(self.__main_window, text="Start", command=self.create_patients())
+        self.__exitButton = Button(self.__main_window, text="Exit", command=self.exit)
+
+        #Creating grid-layout for components
+        self.__startButton.grid(row=0, column=0, sticky=W)
+        self.__exitButton.grid(row=1, column=0, sticky=W)
 
 
-    #Tähän HealthSofta -classin alle tulee suurin osa funktioista.
+    #Tähän kohtaan HealthSofta -classin alle tulee suurin osa funktioista.
 
 
     def create_patients(self):
@@ -86,17 +97,20 @@ class HealthSofta:
             server_password="tutfhir1")
         all_patients = client.get_all_patients()
 
-        # List all found patients
         for patient_record in all_patients:
+
             patient_id = patient_record["id"]
+
             patient_given = patient_record["name"][0]["given"][0]
+
             new_patient = Patient(patient_id, patient_given)
-            self.__PATIENTS.append(new_patient)
-            self.__PATIENT_NAMES.append(patient_given)
 
-        for i in self.__PATIENT_NAMES:
-            pprint(i)
+            self.__PATIENTS[patient_id] = new_patient
 
+
+
+    def exit(self):
+        self.__main_window.destroy()
 
 
     def start(self):
@@ -106,7 +120,6 @@ class HealthSofta:
 def main():
     user_interference = HealthSofta()
     user_interference.start()
-    user_interference.create_patients()
 
 
 main()
