@@ -26,7 +26,7 @@ class Patient:
 
         #Näihin listoihin tallennetaan yksittäisiä veriarvoja aikajärjestyksessä. Ei vielä käytössä missään.
         #Muukin muoto kuin lista voisi toimia.
-        self.__glucoseB = []
+        #self.__glucoseB = {ajankohda: [arvo: viitearvoissa]}
         self.__glucoseS = []
         self.__bilirubE = []
         self.__bilirubK = []
@@ -99,13 +99,14 @@ class HealthSofta:
 
         for patient_record in all_patients:
 
+
+            #Tässä kohtaa luetaan veriarvot oliolle
+
             patient_id = patient_record["id"]
-
             patient_given = patient_record["name"][0]["given"][0]
-
             new_patient = Patient(patient_id, patient_given)
-
             self.__PATIENTS[patient_id] = new_patient
+
 
 
 
