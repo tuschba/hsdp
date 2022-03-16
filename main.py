@@ -6,7 +6,7 @@ Project for:
 Made by:
     Olivia Aarikka:)
     Anni Hakola
-    Miina Rautakorpi
+    Miina Rautakorpi:)
     Tuulia Laakso
 
 Instructions:
