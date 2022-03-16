@@ -4,7 +4,7 @@ Project for:
     Spring 2022
 
 Made by:
-    Olivia Aarikka
+    Olivia Aarikka:)
     Anni Hakola
     Miina Rautakorpi
     Tuulia Laakso
