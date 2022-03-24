@@ -122,10 +122,10 @@ class HealthSofta:
             glucose_B_list = []
             glucose_S_list = []
 
-            bilirub_K_list.clear()
+            '''bilirub_K_list.clear()
             bilirub_E_list.clear()
             glucose_B_list.clear()
-            glucose_S_list.clear()
+            glucose_S_list.clear()'''
 
 
             # Käy läpi potilaat ja tallentaa oikeet arvot listoihin
@@ -194,6 +194,5 @@ class HealthSofta:
 def main():
     user_interference = HealthSofta()
     user_interference.start()
-
 
 main()
