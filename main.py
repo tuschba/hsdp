@@ -15,6 +15,7 @@ Instructions:
 
 import json
 import re
+import tkinter
 from tkinter import *
 import requests
 from pprint import pprint
@@ -83,18 +84,46 @@ class HealthSofta:
     def __init__(self):
         self.__main_window = Tk()
         self.__main_window.title("HealthSofta")
+        self.__main_window.geometry("800x800")
+        self.__main_window.configure(bg='white')
 
         #Tässä dictissä on keynä potilaan id, ja sen jälkeen potilasolento.
         self.__PATIENTS = {}
 
         #Creating components for UI
-        self.__startButton = Button(self.__main_window, text="Start", command=self.create_patients())
+        self.__headerLabel = Label(self.__main_window, text="Welcome to HealthSofta!", font=("Helvetica", 18))
+        self.__headerLabel.grid(row=0, column=0)
+        #self.__welcomeLabel.place(x=90, y=0)
+        #self.__main_window.label
+
+        self.__explText = Text(self.__main_window, font=("Helvetica", 12))
+        self.__explText.insert(INSERT, "Press Start to download latest results from your patients'\n devices. "
+                                            "After that you can see the analysed data.")
+        self.__explText.grid(row=3, column=0, rowspan=2)
+        #self.__explText.place(x=0, y=30)
+
+        self.__buttonLogo = Button(self.__main_window, text="LOGO HERE", font=(16), state="disabled")
+        self.__buttonLogo.grid(row=0, column=2)
+
+        #self.__startButton = Button(self.__main_window, text="Start", command=self.create_patients())
+        self.__starButton = Button(self.__main_window, text="Start", command=self.search)
         self.__exitButton = Button(self.__main_window, text="Exit", command=self.exit)
 
         #Creating grid-layout for components
-        self.__startButton.grid(row=0, column=0, sticky=W)
-        self.__exitButton.grid(row=1, column=0, sticky=W)
+        #self.__startButton.place(x=0, y=60)
+        #self.__exitButton.place(x=250, y=60)
 
+        self.__startButton.grid(row=4, column=0, sticky=W)
+        self.__startButton.configure(height=5, width = 5)
+        self.__exitButton.grid(row=4, column=2, sticky=W)
+        self.__exitButton.configure(height=5, width=5)
+
+
+
+    def search(self):
+        self.__headerLabel['text'] = "Search for a patient to continue"
+        self.__explText.delete(1.0, "end")
+        self.__explText.insert(1.0, "Instructions here.")
 
     #Tähän kohtaan HealthSofta -classin alle tulee suurin osa funktioista.
 
@@ -109,10 +138,10 @@ class HealthSofta:
         i = 0
 
         # Testailua näiden avulla
-        '''all_data_patient = client.get_all_data_for_patient(all_patients[0]["id"])
-        print(all_patients[49]['id'])
-        print(all_data_patient[49]['resource']['text']['div'][0])
-        print(all_data_patient[49]['resource']['code']['coding'][0]['display'])'''
+        #'''all_data_patient = client.get_all_data_for_patient(all_patients[0]["id"])
+        #print(all_patients[49]['id'])
+        #print(all_data_patient[49]['resource']['text']['div'][0])
+        #print(all_data_patient[49]['resource']['code']['coding'][0]['display'])'''
 
 
         for patient_record in all_patients:
@@ -140,22 +169,22 @@ class HealthSofta:
                     if tmp['resource']['code']['coding'][0]['display'] == "Bilirub Skin-mCnc":
                         bilirub_K = tmp['resource']['text']['div']
                         bilirub_K_list.append(bilirub_K)
-                        print(bilirub_K)
+                        #print(bilirub_K)
 
                     if tmp['resource']['code']['coding'][0]['display'] == "Bilirub SerPl-mCnc":
                         bilirub_E = tmp['resource']['text']['div']
                         bilirub_E_list.append(bilirub_E)
-                        print (bilirub_E)
+                        #print (bilirub_E)
 
                     if tmp['resource']['code']['coding'][0]['display'] == "Glucose Bld-mCnc":
                         glucose_B = tmp['resource']['text']['div']
                         glucose_B_list.append(glucose_B)
-                        print(glucose_B)
+                        #print(glucose_B)
 
                     if tmp['resource']['code']['coding'][0]['display'] == "Glucose SerPl-mCnc":
                         glucose_S = tmp['resource']['text']['div']
                         glucose_S_list.append(glucose_S)
-                        print(glucose_S)
+                        #print(glucose_S)
 
             # Bilirub E:
             #http://tutsgnfhir.com/Observation/Observation-879-lab patient 665677
@@ -173,7 +202,7 @@ class HealthSofta:
             #http://tutsgnfhir.com/Observation/Observation-976-lab 665677
 
             patient_id = patient_record["id"]
-            print(patient_id)
+            #print(patient_id)
             patient_given = patient_record["name"][0]["given"][0]
             new_patient = Patient(patient_id, patient_given, bilirub_K_list, bilirub_E_list, glucose_B_list, glucose_S_list)
             self.__PATIENTS[patient_id] = new_patient
