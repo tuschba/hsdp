@@ -92,7 +92,7 @@ class HealthSofta:
 
         #Creating components for UI
         self.__headerLabel = Label(self.__main_window, text="Welcome to HealthSofta!", font=("Helvetica", 18))
-        self.__headerLabel.grid(row=0, column=0)
+        self.__headerLabel.grid(row=0, column=0, columnspan=5)
         #self.__welcomeLabel.place(x=90, y=0)
         #self.__main_window.label
 
@@ -101,12 +101,14 @@ class HealthSofta:
                                             "After that you can see the analysed data.")
         self.__explText.grid(row=3, column=0, rowspan=2)
         #self.__explText.place(x=0, y=30)
+        #self.__Text2 = Text(self.__main_window, font=("Helvetica", 12))
+        #self.__Text2.grid(row=5, column=0)
 
         self.__buttonLogo = Button(self.__main_window, text="LOGO HERE", font=(16), state="disabled")
         self.__buttonLogo.grid(row=0, column=2)
 
         #self.__startButton = Button(self.__main_window, text="Start", command=self.create_patients())
-        self.__starButton = Button(self.__main_window, text="Start", command=self.search)
+        self.__startButton = Button(self.__main_window, text="Start", command=self.search)
         self.__exitButton = Button(self.__main_window, text="Exit", command=self.exit)
 
         #Creating grid-layout for components
@@ -123,7 +125,18 @@ class HealthSofta:
     def search(self):
         self.__headerLabel['text'] = "Search for a patient to continue"
         self.__explText.delete(1.0, "end")
-        self.__explText.insert(1.0, "Instructions here.")
+        self.__explText.insert(1.0, "Instructions here.\n\n\nGive the ID of the patient: ")
+        #self.__Text2.insert(1.0, "Give the ID of the patient: ")
+
+        self.__entryID = Entry(self.__main_window)
+        self.__entryID.grid(row=3, column=1, sticky=W)
+        self.__entryButton = Button(self.__main_window, text="Search", command=self.exit)
+        #entryButtoniin tulee commandiksi oikeasti potilaan hakeminen ID:n avulla 
+        self.__entryButton.grid(row=3, column=2, sticky=W)
+        self.__entryButton.configure(height=1, width=6)
+
+
+        self.__startButton.destroy()
 
     #Tähän kohtaan HealthSofta -classin alle tulee suurin osa funktioista.
 
