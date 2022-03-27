@@ -86,26 +86,28 @@ class HealthSofta:
         self.__main_window.title("HealthSofta")
         self.__main_window.geometry("800x800")
         self.__main_window.configure(bg='white')
+        self.__main_window.rowconfigure(0, {'minsize': 2})
+
 
         #Tässä dictissä on keynä potilaan id, ja sen jälkeen potilasolento.
         self.__PATIENTS = {}
 
         #Creating components for UI
-        self.__headerLabel = Label(self.__main_window, text="Welcome to HealthSofta!", font=("Helvetica", 18))
-        self.__headerLabel.grid(row=0, column=0, columnspan=5)
+        self.__headerLabel = Label(self.__main_window, text="Welcome to HealthSofta!", font=("Helvetica", 18), width=20)
+        self.__headerLabel.grid(row=0, column=0, sticky=W)
         #self.__welcomeLabel.place(x=90, y=0)
         #self.__main_window.label
 
-        self.__explText = Text(self.__main_window, font=("Helvetica", 12))
-        self.__explText.insert(INSERT, "Press Start to download latest results from your patients'\n devices. "
-                                            "After that you can see the analysed data.")
-        self.__explText.grid(row=3, column=0, rowspan=2)
+        self.__explText = Text(self.__main_window, font=("Helvetica", 12), width=40, height=10)
+        self.__explText.insert(INSERT, "Press Start to download latest results from your\n patients' devices. "
+                                            "After that you\ncan see the analysed data.")
+        self.__explText.grid(row=3, column=0, rowspan=3)
         #self.__explText.place(x=0, y=30)
         #self.__Text2 = Text(self.__main_window, font=("Helvetica", 12))
         #self.__Text2.grid(row=5, column=0)
 
-        self.__buttonLogo = Button(self.__main_window, text="LOGO HERE", font=(16), state="disabled")
-        self.__buttonLogo.grid(row=0, column=2)
+        self.__buttonLogo = Button(self.__main_window, text="LOGO HERE", font=(16), state="disabled", height=4)
+        self.__buttonLogo.grid(row=0, column=6)
 
         #self.__startButton = Button(self.__main_window, text="Start", command=self.create_patients())
         self.__startButton = Button(self.__main_window, text="Start", command=self.search)
@@ -115,9 +117,9 @@ class HealthSofta:
         #self.__startButton.place(x=0, y=60)
         #self.__exitButton.place(x=250, y=60)
 
-        self.__startButton.grid(row=4, column=0, sticky=W)
+        self.__startButton.grid(row=5, column=0, sticky=NW)
         self.__startButton.configure(height=5, width = 5)
-        self.__exitButton.grid(row=4, column=2, sticky=W)
+        self.__exitButton.grid(row=5, column=2, sticky=W)
         self.__exitButton.configure(height=5, width=5)
 
 
@@ -129,16 +131,21 @@ class HealthSofta:
         #self.__Text2.insert(1.0, "Give the ID of the patient: ")
 
         self.__entryID = Entry(self.__main_window)
-        self.__entryID.grid(row=3, column=1, sticky=W)
+        self.__entryID.grid(row=3, column=1, sticky=SW)
         self.__entryButton = Button(self.__main_window, text="Search", command=self.exit)
         #entryButtoniin tulee commandiksi oikeasti potilaan hakeminen ID:n avulla
-        self.__entryButton.grid(row=3, column=2, sticky=W)
+        self.__entryButton.grid(row=3, column=2, sticky=SW)
         self.__entryButton.configure(height=1, width=6)
 
 
-        self.__startButton.destroy()
+        self.__startButton['text'] = "Back"
+        self.__startButton['command'] = self.back
 
     #Tähän kohtaan HealthSofta -classin alle tulee suurin osa funktioista.
+
+    def back(self):
+        self.__main_window.destroy()
+        self.__init__()
 
 
     def create_patients(self):
