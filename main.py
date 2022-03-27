@@ -131,7 +131,7 @@ class HealthSofta:
         self.__entryID = Entry(self.__main_window)
         self.__entryID.grid(row=3, column=1, sticky=W)
         self.__entryButton = Button(self.__main_window, text="Search", command=self.exit)
-        #entryButtoniin tulee commandiksi oikeasti potilaan hakeminen ID:n avulla 
+        #entryButtoniin tulee commandiksi oikeasti potilaan hakeminen ID:n avulla
         self.__entryButton.grid(row=3, column=2, sticky=W)
         self.__entryButton.configure(height=1, width=6)
 
