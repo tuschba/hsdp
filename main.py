@@ -43,6 +43,9 @@ class Patient:
     def return_id_name(self):
         return int(self.__id), str(self.__name)
 
+    def return_name(self):
+        return str(self.__name)
+
     def return_blood_values(self):
         return self.__glucoseB, self.__glucoseS, self.__bilirubE, self.__bilirubK
 
@@ -85,61 +88,53 @@ class HealthSofta:
         self.__main_window = Tk()
         self.__main_window.title("HealthSofta")
         self.__main_window.geometry("800x800")
-        self.__main_window.configure(bg='white')
+        self.__main_window.configure(bg='white', borderwidth=10)
         self.__main_window.rowconfigure(0, {'minsize': 2})
 
 
         #Tässä dictissä on keynä potilaan id, ja sen jälkeen potilasolento.
+
         self.__PATIENTS = {}
 
         #Creating components for UI
-        self.__headerLabel = Label(self.__main_window, text="Welcome to HealthSofta!", font=("Helvetica", 18), width=20)
-        self.__headerLabel.grid(row=0, column=0, sticky=W)
+        self.__headerLabel = Label(self.__main_window, text="Welcome to HealthSofta!", font=("Helvetica", 18),
+                                   bg='#33FFB0')
+        self.__headerLabel.grid(row=0, column=0, sticky=NW, columnspan=2)
         #self.__welcomeLabel.place(x=90, y=0)
         #self.__main_window.label
 
-        self.__explText = Text(self.__main_window, font=("Helvetica", 12), width=40, height=10)
-        self.__explText.insert(INSERT, "Press Start to download latest results from your\n patients' devices. "
-                                            "After that you\ncan see the analysed data.")
-        self.__explText.grid(row=3, column=0, rowspan=3)
+        self.__explText = Label(self.__main_window, font=("Helvetica", 12), highlightthickness=0,
+                                highlightcolor='white', text="Press Start to download latest results from your\n"
+                                                             "patients' devices. After that you can see the\nanalysed "
+                                                             "data.", bg='white')
+
+        self.__explText.grid(row=1, column=0, sticky=NW, columnspan=2)
+        #self.__explText.pack()
+
+        #self.__explText = Text(self.__main_window, font=("Helvetica", 12), width=40, height=10, highlightthickness=0, borderwidth=0)
+        #self.__explText.insert(INSERT, "Press Start to download latest results from your\n patients' devices. "
+        #                                    "After that you\ncan see the analysed data.")
+        #self.__explText.grid(row=3, column=0, rowspan=2)
         #self.__explText.place(x=0, y=30)
         #self.__Text2 = Text(self.__main_window, font=("Helvetica", 12))
         #self.__Text2.grid(row=5, column=0)
 
         self.__buttonLogo = Button(self.__main_window, text="LOGO HERE", font=(16), state="disabled", height=4)
-        self.__buttonLogo.grid(row=0, column=6)
+        self.__buttonLogo.grid(row=0, column=6, rowspan=3)
 
         #self.__startButton = Button(self.__main_window, text="Start", command=self.create_patients())
-        self.__startButton = Button(self.__main_window, text="Start", command=self.search)
+        self.__startButton = Button(self.__main_window, text="Start", command=self.create_patients, bg='#75FF30')
         self.__exitButton = Button(self.__main_window, text="Exit", command=self.exit)
 
         #Creating grid-layout for components
-        #self.__startButton.place(x=0, y=60)
-        #self.__exitButton.place(x=250, y=60)
 
-        self.__startButton.grid(row=5, column=0, sticky=NW)
-        self.__startButton.configure(height=5, width = 5)
-        self.__exitButton.grid(row=5, column=2, sticky=W)
-        self.__exitButton.configure(height=5, width=5)
+        self.__startButton.grid(row=6, column=0, sticky=SW)
+        self.__startButton.configure(width=5)
+        self.__exitButton.grid(row=6, column=2, sticky=SW)
+        self.__exitButton.configure(width=5)
 
 
 
-    def search(self):
-        self.__headerLabel['text'] = "Search for a patient to continue"
-        self.__explText.delete(1.0, "end")
-        self.__explText.insert(1.0, "Instructions here.\n\n\nGive the ID of the patient: ")
-        #self.__Text2.insert(1.0, "Give the ID of the patient: ")
-
-        self.__entryID = Entry(self.__main_window)
-        self.__entryID.grid(row=3, column=1, sticky=SW)
-        self.__entryButton = Button(self.__main_window, text="Search", command=self.exit)
-        #entryButtoniin tulee commandiksi oikeasti potilaan hakeminen ID:n avulla
-        self.__entryButton.grid(row=3, column=2, sticky=SW)
-        self.__entryButton.configure(height=1, width=6)
-
-
-        self.__startButton['text'] = "Back"
-        self.__startButton['command'] = self.back
 
     #Tähän kohtaan HealthSofta -classin alle tulee suurin osa funktioista.
 
@@ -158,10 +153,10 @@ class HealthSofta:
         i = 0
 
         # Testailua näiden avulla
-        #'''all_data_patient = client.get_all_data_for_patient(all_patients[0]["id"])
-        #print(all_patients[49]['id'])
-        #print(all_data_patient[49]['resource']['text']['div'][0])
-        #print(all_data_patient[49]['resource']['code']['coding'][0]['display'])'''
+        '''all_data_patient = client.get_all_data_for_patient(all_patients[0]["id"])
+        print(all_patients[49]['id'])
+        print(all_data_patient[49]['resource']['text']['div'][0])
+        print(all_data_patient[49]['resource']['code']['coding'][0]['display'])'''
 
 
         for patient_record in all_patients:
@@ -189,22 +184,22 @@ class HealthSofta:
                     if tmp['resource']['code']['coding'][0]['display'] == "Bilirub Skin-mCnc":
                         bilirub_K = tmp['resource']['text']['div']
                         bilirub_K_list.append(bilirub_K)
-                        #print(bilirub_K)
+                        print(bilirub_K)
 
                     if tmp['resource']['code']['coding'][0]['display'] == "Bilirub SerPl-mCnc":
                         bilirub_E = tmp['resource']['text']['div']
                         bilirub_E_list.append(bilirub_E)
-                        #print (bilirub_E)
+                        print (bilirub_E)
 
                     if tmp['resource']['code']['coding'][0]['display'] == "Glucose Bld-mCnc":
                         glucose_B = tmp['resource']['text']['div']
                         glucose_B_list.append(glucose_B)
-                        #print(glucose_B)
+                        print(glucose_B)
 
                     if tmp['resource']['code']['coding'][0]['display'] == "Glucose SerPl-mCnc":
                         glucose_S = tmp['resource']['text']['div']
                         glucose_S_list.append(glucose_S)
-                        #print(glucose_S)
+                        print(glucose_S)
 
             # Bilirub E:
             #http://tutsgnfhir.com/Observation/Observation-879-lab patient 665677
@@ -222,13 +217,88 @@ class HealthSofta:
             #http://tutsgnfhir.com/Observation/Observation-976-lab 665677
 
             patient_id = patient_record["id"]
-            #print(patient_id)
+            print(patient_id)
             patient_given = patient_record["name"][0]["given"][0]
             new_patient = Patient(patient_id, patient_given, bilirub_K_list, bilirub_E_list, glucose_B_list, glucose_S_list)
             self.__PATIENTS[patient_id] = new_patient
 
             i += 1
 
+        self.__headerLabel['text'] = "Search for a patient to continue"
+
+        self.__explText['text'] = "Instructions here."
+        self.__Text2 = Label(self.__main_window, text="Give the ID of the patient:", font=("Helvetica", 12), bg='white')
+        self.__Text2.grid(row=4, column=0, sticky=NW)
+        # self.__explText.delete(1.0, "end")
+        # self.__explText.insert(1.0, "Instructions here.\n\n\nGive the ID of the patient: ")
+        # self.__Text2.insert(1.0, "Give the ID of the patient: ")
+
+        self.__entryID = Entry(self.__main_window, borderwidth=2)
+        self.__entryID.grid(row=4, column=1, sticky=NW)
+        self.__ID = self.__entryID.get()
+        self.__entryButton = Button(self.__main_window, text="Search", command=self.search)
+        # entryButtoniin tulee commandiksi oikeasti potilaan hakeminen ID:n avulla
+        self.__entryButton.grid(row=4, column=2, sticky=NW)
+        self.__entryButton.configure(height=1, width=6)
+
+        self.__emptyText = Label(self.__main_window, bg='white', text=" ")
+        self.__emptyText.grid(row=5, column=0, sticky=NW)
+
+        self.__startButton['text'] = "Back"
+        self.__startButton['command'] = self.back
+        self.__startButton['bg'] = "#f0f0f0"
+
+
+
+    def search(self):
+        self.__ID = self.__entryID.get()
+        if not self.__ID:
+            self.__emptyText['text'] = "You did not give any ID. Please, write an ID\nand then press Searh"
+
+        else:
+
+            #Check if the ID exists in the dict
+            if self.__ID in self.__PATIENTS:
+                self.__entryID.destroy()
+                self.__patient = self.__PATIENTS[self.__ID]
+                self.__name = self.__patient.return_name()
+                self.__headerLabel['text'] = self.__name
+                self.__emptyText['text'] = " "
+                self.__Text2['text'] = "The given ID is:"
+                self.__startButton['command'] = self.back_to_search
+                self.__explText['text'] = self.__ID
+                self.__entryButton.destroy()
+
+            else:
+                self.__emptyText['text'] = "The given  ID was not found in the database.\nTry to give another one, please."
+                self.__emptyText['fontcolor'] = 'red'
+
+
+
+
+
+
+    def back_to_search(self):
+        self.__headerLabel['text'] = "Search for a patient to continue"
+
+        self.__explText['text'] = "Instructions here."
+        self.__Text2 = Label(self.__main_window, text="Give the ID of the patient:", font=("Helvetica", 12), bg='white')
+        self.__Text2.grid(row=4, column=0, sticky=NW)
+        # self.__explText.delete(1.0, "end")
+        # self.__explText.insert(1.0, "Instructions here.\n\n\nGive the ID of the patient: ")
+        # self.__Text2.insert(1.0, "Give the ID of the patient: ")
+
+        self.__entryID = Entry(self.__main_window, borderwidth=2)
+        self.__entryID.grid(row=4, column=1, sticky=NW)
+        self.__ID = self.__entryID.get()
+        self.__entryButton = Button(self.__main_window, text="Search", command=self.search)
+        # entryButtoniin tulee commandiksi oikeasti potilaan hakeminen ID:n avulla
+        self.__entryButton.grid(row=4, column=2, sticky=NW)
+        self.__entryButton.configure(height=1, width=6)
+
+        self.__startButton['text'] = "Back"
+        self.__startButton['command'] = self.back
+        self.__startButton['bg'] = "#f0f0f0"
 
 
 
