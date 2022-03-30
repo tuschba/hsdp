@@ -46,6 +46,13 @@ class Patient:
     def return_name(self):
         return str(self.__name)
 
+    def return_bilirubinE(self):
+        return self.__bilirubE
+
+    def return_bilirubinK(self):
+        return self.__bilirubK
+
+
     def return_blood_values(self):
         return self.__glucoseB, self.__glucoseS, self.__bilirubE, self.__bilirubK
 
@@ -118,6 +125,11 @@ class HealthSofta:
         #self.__explText.place(x=0, y=30)
         #self.__Text2 = Text(self.__main_window, font=("Helvetica", 12))
         #self.__Text2.grid(row=5, column=0)
+
+        self.__textValues = Label(text=" ", font=("Helvetica", 12), bg='white')
+        self.__textValues.grid(row=5, column=1)
+        self.__textValues2 = Label(fg='red', bg='white')
+        self.__textValues2.grid(row=5, column=2)
 
         self.__buttonLogo = Button(self.__main_window, text="LOGO HERE", font=(16), state="disabled", height=4)
         self.__buttonLogo.grid(row=0, column=6, rowspan=3)
@@ -267,11 +279,19 @@ class HealthSofta:
                 self.__Text2['text'] = "The given ID is:"
                 self.__startButton['command'] = self.back_to_search
                 self.__explText['text'] = self.__ID
+
+                self.__textValues['text'] = "BilirubinK values are:"
+                #self.__textValues.grid(row=5,column=1)
+                #self.__textValues2 = Label(fg='red')
+                self.__textValues2['text'] = self.__patient.return_bilirubinK()
+                #self.__textValues2.grid(row=5, column=2)
+
                 self.__entryButton.destroy()
+
 
             else:
                 self.__emptyText['text'] = "The given  ID was not found in the database.\nTry to give another one, please."
-                self.__emptyText['fontcolor'] = 'red'
+                #self.__emptyText['font-color'] = 'red'
 
 
 
@@ -295,6 +315,9 @@ class HealthSofta:
         # entryButtoniin tulee commandiksi oikeasti potilaan hakeminen ID:n avulla
         self.__entryButton.grid(row=4, column=2, sticky=NW)
         self.__entryButton.configure(height=1, width=6)
+
+        self.__textValues['text'] = " "
+        self.__textValues2['text'] = " "
 
         self.__startButton['text'] = "Back"
         self.__startButton['command'] = self.back
