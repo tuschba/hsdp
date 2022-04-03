@@ -19,6 +19,7 @@ import tkinter
 from tkinter import *
 import requests
 from pprint import pprint
+from PIL import ImageTk, Image
 
 
 class Patient:
@@ -52,6 +53,11 @@ class Patient:
     def return_bilirubinK(self):
         return self.__bilirubK
 
+    def return_glucoseB(self):
+        return self.__glucoseB
+
+    def return_glucoseS(self):
+        return self.__glucoseS
 
     def return_blood_values(self):
         return self.__glucoseB, self.__glucoseS, self.__bilirubE, self.__bilirubK
@@ -105,7 +111,8 @@ class HealthSofta:
 
         #Creating components for UI
         self.__headerLabel = Label(self.__main_window, text="Welcome to HealthSofta!", font=("Helvetica", 18),
-                                   bg='#33FFB0')
+                                   bg='#F36640')
+                                   #bg='#33FFB0')
         self.__headerLabel.grid(row=0, column=0, sticky=NW, columnspan=2)
         #self.__welcomeLabel.place(x=90, y=0)
         #self.__main_window.label
@@ -116,23 +123,23 @@ class HealthSofta:
                                                              "data.", bg='white')
 
         self.__explText.grid(row=1, column=0, sticky=NW, columnspan=2)
-        #self.__explText.pack()
 
-        #self.__explText = Text(self.__main_window, font=("Helvetica", 12), width=40, height=10, highlightthickness=0, borderwidth=0)
-        #self.__explText.insert(INSERT, "Press Start to download latest results from your\n patients' devices. "
-        #                                    "After that you\ncan see the analysed data.")
-        #self.__explText.grid(row=3, column=0, rowspan=2)
-        #self.__explText.place(x=0, y=30)
-        #self.__Text2 = Text(self.__main_window, font=("Helvetica", 12))
-        #self.__Text2.grid(row=5, column=0)
 
         self.__textValues = Label(text=" ", font=("Helvetica", 12), bg='white')
         self.__textValues.grid(row=5, column=1)
         self.__textValues2 = Label(fg='red', bg='white')
         self.__textValues2.grid(row=5, column=2)
 
-        self.__buttonLogo = Button(self.__main_window, text="LOGO HERE", font=(16), state="disabled", height=4)
-        self.__buttonLogo.grid(row=0, column=6, rowspan=3)
+        self.__logoLabel= Label(self.__main_window)
+        #Download the logo image from the correct path and place it on the logoLabel
+        logoImage = Image.open(r"C:\Users\Omistaja\Downloads\photo1648724898_small.jpeg")
+        logo = ImageTk.PhotoImage(logoImage)
+        self.__logoLabel = Label(self.__main_window, image=logo, borderwidth=2, bg='white')
+        self.__logoLabel.image = logo
+        self.__logoLabel.grid(row=0, column=3, rowspan=3, sticky=N)
+
+        #self.__buttonLogo = Button(self.__main_window, font=(16), state="disabled", height=4)
+        #self.__buttonLogo.grid(row=0, column=6, rowspan=3)
 
         #self.__startButton = Button(self.__main_window, text="Start", command=self.create_patients())
         self.__startButton = Button(self.__main_window, text="Start", command=self.create_patients, bg='#75FF30')
@@ -140,10 +147,10 @@ class HealthSofta:
 
         #Creating grid-layout for components
 
-        self.__startButton.grid(row=6, column=0, sticky=SW)
-        self.__startButton.configure(width=5)
-        self.__exitButton.grid(row=6, column=2, sticky=SW)
-        self.__exitButton.configure(width=5)
+        self.__startButton.grid(row=10, column=0, sticky=SW)
+        self.__startButton.configure(width=7, height=3)
+        self.__exitButton.grid(row=10, column=3, sticky=SW)
+        self.__exitButton.configure(width=7, height=3)
 
 
 
@@ -238,12 +245,12 @@ class HealthSofta:
 
         self.__headerLabel['text'] = "Search for a patient to continue"
 
-        self.__explText['text'] = "Instructions here."
+        self.__explText['text'] = "Write the ID of the patient and press search. If any\nblood values are found for the " \
+                                  "patient,\nthey will be shown on the next screen.\n" \
+                                  "If you want to search for another patient, you can\npress Back, and " \
+                                  "you will get back to this page."
         self.__Text2 = Label(self.__main_window, text="Give the ID of the patient:", font=("Helvetica", 12), bg='white')
         self.__Text2.grid(row=4, column=0, sticky=NW)
-        # self.__explText.delete(1.0, "end")
-        # self.__explText.insert(1.0, "Instructions here.\n\n\nGive the ID of the patient: ")
-        # self.__Text2.insert(1.0, "Give the ID of the patient: ")
 
         self.__entryID = Entry(self.__main_window, borderwidth=2)
         self.__entryID.grid(row=4, column=1, sticky=NW)
@@ -275,38 +282,57 @@ class HealthSofta:
                 self.__patient = self.__PATIENTS[self.__ID]
                 self.__name = self.__patient.return_name()
                 self.__headerLabel['text'] = self.__name
+
                 self.__emptyText['text'] = " "
-                self.__Text2['text'] = "The given ID is:"
+                self.__Text2.destroy()
                 self.__startButton['command'] = self.back_to_search
                 self.__explText['text'] = self.__ID
 
-                self.__textValues['text'] = "BilirubinK values are:"
-                #self.__textValues.grid(row=5,column=1)
-                #self.__textValues2 = Label(fg='red')
-                self.__textValues2['text'] = self.__patient.return_bilirubinK()
-                #self.__textValues2.grid(row=5, column=2)
+                self.__textValues.destroy()
+                #self.__textValues['text'] = "BilirubinK values are:"
+                #Adding and aligning bilirubinK values:
+                self.__textBk = Label(self.__main_window, text="BilirubinK values are:", bg='white', font=("Helvetica", 12))
+                self.__textBk.grid(row=3, column=0, sticky=NW)
+                self.__valuesBk = Label(self.__main_window, text=self.__patient.return_bilirubinK(), bg='white')
+                self.__valuesBk.grid(row=3, column=1, sticky=NW)
 
+                #Adding and aligning bilirubinE values:
+                self.__textBe = Label(self.__main_window, text="BilirubinE values are:", bg='white', font=("Helvetica", 12))
+                self.__textBe.grid(row=4, column=0, sticky=NW)
+                self.__valuesBe = Label(self.__main_window, text=self.__patient.return_bilirubinE(), bg='white')
+                self.__valuesBe.grid(row=4, column=1, sticky=NW)
+
+                #Adding and aligning glucoseB values:
+                self.__textGb = Label(self.__main_window, bg='white', font=("Helvetica", 12), text="GlucoseB values are: ")
+                self.__textGb.grid(row=5, column=0, sticky=NW)
+                self.__valuesGb = Label(self.__main_window, text=self.__patient.return_glucoseB(), bg='white')
+                self.__valuesGb.grid(row=5, column=1, sticky=NW)
+
+                #Adding and aligning glucoseS values:
+                self.__textGs = Label(self.__main_window, bg='white', font=("Helvetica", 12), text="GlucoseS values are: ")
+                self.__textGs.grid(row=6, column=0, sticky=NW)
+                self.__valuesGs = Label(self.__main_window, text=self.__patient.return_glucoseS(), bg='white', fg='red')
+                self.__valuesGs.grid(row=6, column=1, sticky=NW)
+
+                #Destroying extra widgets from the window
                 self.__entryButton.destroy()
 
-
+            #If the given ID was not valid, or it was not found on the database
             else:
                 self.__emptyText['text'] = "The given  ID was not found in the database.\nTry to give another one, please."
-                #self.__emptyText['font-color'] = 'red'
+                self.__emptyText['fg'] = 'red'
 
-
-
-
-
-
+    #Function back_to_search is called when the back-button on the Patient window is pressed. It intializes the
+    #patient searc page again.
     def back_to_search(self):
         self.__headerLabel['text'] = "Search for a patient to continue"
 
-        self.__explText['text'] = "Instructions here."
+        self.__explText['text'] = "Write the ID of the patient and press search. If any\nblood values are found for the " \
+                      "patient,\nthey will be shown on the next page.\n" \
+                      "If you want to search for another patient, you can\npress Back, and " \
+                      "you will get back to this page."
         self.__Text2 = Label(self.__main_window, text="Give the ID of the patient:", font=("Helvetica", 12), bg='white')
         self.__Text2.grid(row=4, column=0, sticky=NW)
-        # self.__explText.delete(1.0, "end")
-        # self.__explText.insert(1.0, "Instructions here.\n\n\nGive the ID of the patient: ")
-        # self.__Text2.insert(1.0, "Give the ID of the patient: ")
 
         self.__entryID = Entry(self.__main_window, borderwidth=2)
         self.__entryID.grid(row=4, column=1, sticky=NW)
@@ -316,6 +342,10 @@ class HealthSofta:
         self.__entryButton.grid(row=4, column=2, sticky=NW)
         self.__entryButton.configure(height=1, width=6)
 
+        self.__textValues = Label(text=" ", font=("Helvetica", 12), bg='white')
+        self.__textValues.grid(row=5, column=1)
+        self.__textValues2 = Label(fg='red', bg='white')
+        self.__textValues2.grid(row=5, column=2)
         self.__textValues['text'] = " "
         self.__textValues2['text'] = " "
 
@@ -323,6 +353,15 @@ class HealthSofta:
         self.__startButton['command'] = self.back
         self.__startButton['bg'] = "#f0f0f0"
 
+        #Destroying the unnecessary and extra widgets from the window
+        self.__textBk.destroy()
+        self.__valuesBk.destroy()
+        self.__textBe.destroy()
+        self.__valuesBe.destroy()
+        self.__textGb.destroy()
+        self.__valuesGb.destroy()
+        self.__textGs.destroy()
+        self.__valuesGs.destroy()
 
 
     def exit(self):
