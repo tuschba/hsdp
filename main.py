@@ -132,7 +132,7 @@ class HealthSofta:
 
         self.__logoLabel= Label(self.__main_window)
         #Download the logo image from the correct path and place it on the logoLabel
-        logoImage = Image.open(r"C:\Users\Omistaja\Downloads\photo1648724898_small.jpeg")
+        logoImage = Image.open(r"photo1648724898_small.jpeg")
         logo = ImageTk.PhotoImage(logoImage)
         self.__logoLabel = Label(self.__main_window, image=logo, borderwidth=2, bg='white')
         self.__logoLabel.image = logo
