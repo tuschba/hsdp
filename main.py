@@ -27,15 +27,13 @@ class Patient:
         self.__id = id
         self.__name = name
 
-        #Näihin listoihin tallennetaan yksittäisiä veriarvoja aikajärjestyksessä. Ei vielä käytössä missään.
-        #Muukin muoto kuin lista voisi toimia.
-        #self.__glucoseB = {ajankohda: [arvo: viitearvoissa]}
+        #self.__glucoseB = {time: [value: reference value]}
         self.__bilirubE = bE
         self.__bilirubK = bK
         self.__glucoseB = gB
         self.__glucoseS = gS
 
-        # En oo varma toimiiko nää listat näin?
+
         '''self.__bilirubE.append(bE)
         self.__bilirubK.append(bK)
         self.__glucoseB.append(gB)
@@ -105,8 +103,7 @@ class HealthSofta:
         self.__main_window.rowconfigure(0, {'minsize': 2})
 
 
-        #Tässä dictissä on keynä potilaan id, ja sen jälkeen potilasolento.
-
+        #This dict has the patien ID as key and after that the patient object
         self.__PATIENTS = {}
 
         #Creating components for UI
@@ -146,16 +143,11 @@ class HealthSofta:
         self.__exitButton = Button(self.__main_window, text="Exit", command=self.exit)
 
         #Creating grid-layout for components
-
         self.__startButton.grid(row=10, column=0, sticky=SW)
         self.__startButton.configure(width=7, height=3)
         self.__exitButton.grid(row=10, column=3, sticky=SW)
         self.__exitButton.configure(width=7, height=3)
 
-
-
-
-    #Tähän kohtaan HealthSofta -classin alle tulee suurin osa funktioista.
 
     def back(self):
         self.__main_window.destroy()
@@ -171,7 +163,7 @@ class HealthSofta:
 
         i = 0
 
-        # Testailua näiden avulla
+        #For testing
         '''all_data_patient = client.get_all_data_for_patient(all_patients[0]["id"])
         print(all_patients[49]['id'])
         print(all_data_patient[49]['resource']['text']['div'][0])
@@ -191,13 +183,13 @@ class HealthSofta:
             glucose_S_list.clear()'''
 
 
-            # Käy läpi potilaat ja tallentaa oikeet arvot listoihin
+            #Goes through the patients and saved them in the correct list
             # <div>2006-12-23: Glucose SerPl-mCnc = 96 mg/dL</div> tässä muodossa listassa
             
-            # potilas
+            #Patient
             all_data_patient = client.get_all_data_for_patient(all_patients[i]["id"])
 
-            # potilaan tiedot
+            #Goes through the patient's details and adds them to the patient object
             for tmp in all_data_patient:
                 if tmp['resource']['resourceType'] == 'Observation':
                     if tmp['resource']['code']['coding'][0]['display'] == "Bilirub Skin-mCnc":
