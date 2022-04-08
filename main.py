@@ -23,9 +23,9 @@ from PIL import ImageTk, Image
 
 
 class Patient:
-    def __init__(self, id, name, bE, bK, gB, gS):
+    def __init__(self, id, fname, lname, bE, bK, gB, gS):
         self.__id = id
-        self.__name = name
+        self.__name = fname + " " + lname
 
         #Näihin listoihin tallennetaan yksittäisiä veriarvoja aikajärjestyksessä. Ei vielä käytössä missään.
         #Muukin muoto kuin lista voisi toimia.
@@ -99,7 +99,7 @@ class SimpleFHIRClient(object):
 class HealthSofta:
     def __init__(self):
         self.__main_window = Tk()
-        self.__main_window.title("HealthSofta")
+        self.__main_window.title("Healthsofta")
         self.__main_window.geometry("800x800")
         self.__main_window.configure(bg='white', borderwidth=10)
         self.__main_window.rowconfigure(0, {'minsize': 2})
@@ -157,6 +157,7 @@ class HealthSofta:
 
     #Tähän kohtaan HealthSofta -classin alle tulee suurin osa funktioista.
 
+    #Function back destroys the Search window and opens a new main (welcome) window
     def back(self):
         self.__main_window.destroy()
         self.__init__()
@@ -237,8 +238,10 @@ class HealthSofta:
 
             patient_id = patient_record["id"]
             print(patient_id)
-            patient_given = patient_record["name"][0]["given"][0]
-            new_patient = Patient(patient_id, patient_given, bilirub_K_list, bilirub_E_list, glucose_B_list, glucose_S_list)
+            #patient_given = patient_record["name"][0]["given"][0]
+            patient_fname = patient_record["name"][0]["given"][0]
+            patient_lname = patient_record["name"][0]["family"][0]
+            new_patient = Patient(patient_id, patient_fname, patient_lname, bilirub_K_list, bilirub_E_list, glucose_B_list, glucose_S_list)
             self.__PATIENTS[patient_id] = new_patient
 
             i += 1
@@ -246,9 +249,7 @@ class HealthSofta:
         self.__headerLabel['text'] = "Search for a patient to continue"
 
         self.__explText['text'] = "Write the ID of the patient and press search. If any\nblood values are found for the " \
-                                  "patient,\nthey will be shown on the next screen.\n" \
-                                  "If you want to search for another patient, you can\npress Back, and " \
-                                  "you will get back to this page."
+                                  "patient,\nthey will be shown on the next screen.\n"
         self.__Text2 = Label(self.__main_window, text="Give the ID of the patient:", font=("Helvetica", 12), bg='white')
         self.__Text2.grid(row=4, column=0, sticky=NW)
 
@@ -281,11 +282,14 @@ class HealthSofta:
                 self.__entryID.destroy()
                 self.__patient = self.__PATIENTS[self.__ID]
                 self.__name = self.__patient.return_name()
-                self.__headerLabel['text'] = self.__name
+                self.__headerLabel['text'] = self.__name, self.__ID
 
-                self.__emptyText['text'] = " "
+                #self.__emptyText['text'] = " "
+                #self.__emptyText.destroy()
                 self.__Text2.destroy()
                 self.__startButton['command'] = self.back_to_search
+                self.__startButton['text'] = "Search for\nanother patient"
+                self.__startButton.configure(width=12, bg='#F36640')
                 self.__explText['text'] = self.__ID
 
                 self.__textValues.destroy()
@@ -352,6 +356,8 @@ class HealthSofta:
         self.__startButton['text'] = "Back"
         self.__startButton['command'] = self.back
         self.__startButton['bg'] = "#f0f0f0"
+        self.__emptyText = Label(self.__main_window, bg='white', text=" ")
+        self.__emptyText.grid(row=5, column=0, sticky=NW)
 
         #Destroying the unnecessary and extra widgets from the window
         self.__textBk.destroy()
