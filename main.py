@@ -107,12 +107,10 @@ class HealthSofta:
         self.__PATIENTS = {}
 
         #Creating components for UI
-        self.__headerLabel = Label(self.__main_window, text="Welcome to HealthSofta!", font=("Helvetica", 18),
+        self.__headerLabel = Label(self.__main_window, text="Welcome to Healthsofta!", font=("Helvetica", 18),
                                    bg='#F36640')
                                    #bg='#33FFB0')
         self.__headerLabel.grid(row=0, column=0, sticky=NW, columnspan=2)
-        #self.__welcomeLabel.place(x=90, y=0)
-        #self.__main_window.label
 
         self.__explText = Label(self.__main_window, font=("Helvetica", 12), highlightthickness=0,
                                 highlightcolor='white', text="Press Start to download latest results from your\n"
