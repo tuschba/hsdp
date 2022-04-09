@@ -191,21 +191,29 @@ class HealthSofta:
                 if tmp['resource']['resourceType'] == 'Observation':
                     if tmp['resource']['code']['coding'][0]['display'] == "Bilirub Skin-mCnc":
                         bilirub_K = tmp['resource']['text']['div']
+                        bilirub_K = bilirub_K[5:]
+                        bilirub_K = bilirub_K.replace('</div>', '')
                         bilirub_K_list.append(bilirub_K)
                         print(bilirub_K)
 
                     if tmp['resource']['code']['coding'][0]['display'] == "Bilirub SerPl-mCnc":
                         bilirub_E = tmp['resource']['text']['div']
+                        bilirub_E = bilirub_E[5:]
+                        bilirub_E = bilirub_E.replace('</div>', '')
                         bilirub_E_list.append(bilirub_E)
                         print (bilirub_E)
 
                     if tmp['resource']['code']['coding'][0]['display'] == "Glucose Bld-mCnc":
                         glucose_B = tmp['resource']['text']['div']
+                        glucose_B = glucose_B[5:]
+                        glucose_B = glucose_B.replace('</div>', '')
                         glucose_B_list.append(glucose_B)
                         print(glucose_B)
 
                     if tmp['resource']['code']['coding'][0]['display'] == "Glucose SerPl-mCnc":
                         glucose_S = tmp['resource']['text']['div']
+                        glucose_S = glucose_S[5:]
+                        glucose_S = glucose_S.replace('</div>', '')
                         glucose_S_list.append(glucose_S)
                         print(glucose_S)
 
@@ -285,24 +293,29 @@ class HealthSofta:
                 #Adding and aligning bilirubinK values:
                 self.__textBk = Label(self.__main_window, text="BilirubinK values are:", bg='white', font=("Helvetica", 12))
                 self.__textBk.grid(row=1, column=0, sticky=NW)
-                self.__valuesBk = Label(self.__main_window, text=self.__patient.return_bilirubinK(), bg='white')
+                bilirK = self.__patient.return_bilirubinK()[5:]
+                self.__valuesBk = Label(self.__main_window, text=bilirK, bg='white')
                 self.__valuesBk.grid(row=1, column=1, sticky=NW)
 
                 #Adding and aligning bilirubinE values:
                 self.__textBe = Label(self.__main_window, text="BilirubinE values are:", bg='white', font=("Helvetica", 12))
                 self.__textBe.grid(row=2, column=0, sticky=NW)
-                self.__valuesBe = Label(self.__main_window, text=self.__patient.return_bilirubinE(), bg='white')
+                bilirE = self.__patient.return_bilirubinE()[5:]
+                self.__valuesBe = Label(self.__main_window, text=bilirE, bg='white')
                 self.__valuesBe.grid(row=2, column=1, sticky=NW)
 
                 #Adding and aligning glucoseB values:
                 self.__textGb = Label(self.__main_window, bg='white', font=("Helvetica", 12), text="GlucoseB values are: ")
                 self.__textGb.grid(row=3, column=0, sticky=NW)
-                self.__valuesGb = Label(self.__main_window, text=self.__patient.return_glucoseB(), bg='white')
+                glucoB = self.__patient.return_glucoseB()[5:]
+                self.__valuesGb = Label(self.__main_window, text=glucoB, bg='white')
                 self.__valuesGb.grid(row=3, column=1, sticky=NW)
 
                 #Adding and aligning glucoseS values:
                 self.__textGs = Label(self.__main_window, bg='white', font=("Helvetica", 12), text="GlucoseS values are: ")
                 self.__textGs.grid(row=4, column=0, sticky=NW)
+                glucoS = self.__patient.return_glucoseS()[5:]
+                #self.__valuesGs = Label(self.__main_window, text=glucoS, bg='white', fg='red')
                 self.__valuesGs = Label(self.__main_window, text=self.__patient.return_glucoseS(), bg='white', fg='red')
                 self.__valuesGs.grid(row=4, column=1, sticky=NW)
 
