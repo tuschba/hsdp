@@ -291,42 +291,59 @@ class HealthSofta:
                 self.__textValues.destroy()
 
                 #Adding and aligning bilirubinK (SerPl-mCnc) values:
-                self.__textBk = Label(self.__main_window, text="BilirubinK values are:", bg='white', font=("Helvetica", 12))
+                self.__textBk = Label(self.__main_window, text="BilirubinK values (reference 0.0-1.0 mg/dL):", bg='white', font=("Helvetica", 12))
                 self.__textBk.grid(row=1, column=0, sticky=NW)
                 bilirK = self.__patient.return_bilirubinK()
-                bilirK = "\n".join([str(x) for x in bilirK])
-                self.__valuesBk = Label(self.__main_window, text=bilirK, bg='white')
-                self.__valuesBk.grid(row=1, column=1, sticky=NW)
+                self.__valuesBk = Label(self.__main_window, bg='white')
+                if not(bilirK):
+                    self.__valuesBk['text'] = " - "
+                    self.__valuesBk['fg'] = "red"
+                else:
+                   bilirK = "\n".join([str(x) for x in bilirK])
 
+                self.__valuesBk['text'] = bilirK
+                self.__valuesBk.grid(row=1, column=1, sticky=NW)
+                #Reference values 0.0-1.0
                 #valueBK = bilirK.split()
                 #if
                 #Bilirubin total 0.1-1.2mg/dL
 
                 #Adding and aligning bilirubinE values:
-                self.__textBe = Label(self.__main_window, text="BilirubinE values are:", bg='white', font=("Helvetica", 12))
+                self.__textBe = Label(self.__main_window, text="BilirubinE values (reference 0.0-1.0 mg/dL):", bg='white', font=("Helvetica", 12))
                 self.__textBe.grid(row=2, column=0, sticky=NW)
                 bilirE = self.__patient.return_bilirubinE()
-                bilirE = "\n".join([str(x) for x in bilirE])
-
                 self.__valuesBe = Label(self.__main_window, text=bilirE, bg='white')
+                if not(bilirE):
+                    self.__valuesBe['text'] = " - "
+                    self.__valuesBe['fg'] = "red"
+                else:
+                    bilirE = "\n".join([str(x) for x in bilirE])
+
+                self.__valuesBe['text'] = bilirE
                 self.__valuesBe.grid(row=2, column=1, sticky=NW)
 
                 #Adding and aligning glucoseB values:
-                self.__textGb = Label(self.__main_window, bg='white', font=("Helvetica", 12), text="GlucoseB values are: ")
+                self.__textGb = Label(self.__main_window, bg='white', font=("Helvetica", 12), text="GlucoseB values (reference 70-109 mg/dL): ")
                 self.__textGb.grid(row=3, column=0, sticky=NW)
                 glucoB = self.__patient.return_glucoseB()
+                self.__valuesGb = Label(self.__main_window, bg='white')
+
+
                 glucoB = "\n".join([str(x) for x in glucoB])
-                self.__valuesGb = Label(self.__main_window, text=glucoB, bg='white')
+                self.__valuesGb['text'] = glucoB
                 self.__valuesGb.grid(row=3, column=1, sticky=NW)
+                #Reference values 70-109
 
                 #Adding and aligning glucoseS (SerPl-mCnc) values:
-                self.__textGs = Label(self.__main_window, bg='white', font=("Helvetica", 12), text="GlucoseS values are: ")
+                self.__textGs = Label(self.__main_window, bg='white', font=("Helvetica", 12), text="GlucoseS values (reference 70-109 mg/dL): ")
                 self.__textGs.grid(row=4, column=0, sticky=NW)
                 glucoS = self.__patient.return_glucoseS()
                 glucoS = "\n".join([str(x) for x in glucoS])
                 #self.__valuesGs = Label(self.__main_window, text=glucoS, bg='white', fg='red')
-                self.__valuesGs = Label(self.__main_window, text=glucoS, bg='white', fg='red')
+                self.__valuesGs = Label(self.__main_window, text=glucoS, bg='white')
                 self.__valuesGs.grid(row=4, column=1, sticky=NW)
+                #Reference values 70-109 (can also be fetched from the database)
+
 
 
 
