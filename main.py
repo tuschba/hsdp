@@ -290,19 +290,23 @@ class HealthSofta:
 
                 self.__textValues.destroy()
 
-                #Adding and aligning bilirubinK values:
+                #Adding and aligning bilirubinK (SerPl-mCnc) values:
                 self.__textBk = Label(self.__main_window, text="BilirubinK values are:", bg='white', font=("Helvetica", 12))
                 self.__textBk.grid(row=1, column=0, sticky=NW)
                 bilirK = self.__patient.return_bilirubinK()
+                bilirK = "\n".join([str(x) for x in bilirK])
                 self.__valuesBk = Label(self.__main_window, text=bilirK, bg='white')
                 self.__valuesBk.grid(row=1, column=1, sticky=NW)
+
+                #valueBK = bilirK.split()
+                #if
+                #Bilirubin total 0.1-1.2mg/dL
 
                 #Adding and aligning bilirubinE values:
                 self.__textBe = Label(self.__main_window, text="BilirubinE values are:", bg='white', font=("Helvetica", 12))
                 self.__textBe.grid(row=2, column=0, sticky=NW)
                 bilirE = self.__patient.return_bilirubinE()
-                for i in range(len(bilirE)):
-                    bilirE[i+1] = "\n"
+                bilirE = "\n".join([str(x) for x in bilirE])
 
                 self.__valuesBe = Label(self.__main_window, text=bilirE, bg='white')
                 self.__valuesBe.grid(row=2, column=1, sticky=NW)
@@ -311,16 +315,20 @@ class HealthSofta:
                 self.__textGb = Label(self.__main_window, bg='white', font=("Helvetica", 12), text="GlucoseB values are: ")
                 self.__textGb.grid(row=3, column=0, sticky=NW)
                 glucoB = self.__patient.return_glucoseB()
+                glucoB = "\n".join([str(x) for x in glucoB])
                 self.__valuesGb = Label(self.__main_window, text=glucoB, bg='white')
                 self.__valuesGb.grid(row=3, column=1, sticky=NW)
 
-                #Adding and aligning glucoseS values:
+                #Adding and aligning glucoseS (SerPl-mCnc) values:
                 self.__textGs = Label(self.__main_window, bg='white', font=("Helvetica", 12), text="GlucoseS values are: ")
                 self.__textGs.grid(row=4, column=0, sticky=NW)
                 glucoS = self.__patient.return_glucoseS()
+                glucoS = "\n".join([str(x) for x in glucoS])
                 #self.__valuesGs = Label(self.__main_window, text=glucoS, bg='white', fg='red')
                 self.__valuesGs = Label(self.__main_window, text=glucoS, bg='white', fg='red')
                 self.__valuesGs.grid(row=4, column=1, sticky=NW)
+
+
 
                 #Destroying extra widgets from the window
                 self.__entryButton.destroy()
